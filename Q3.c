@@ -1,7 +1,6 @@
 #include <stdio.h>
-#include <math.h>
 
-// Função para potenciação inteira (evita problemas de precisão do pow())
+// Funcao para potenciacao inteira (evita problemas de precisao do pow)
 long long potencia_inteira(long long base, int expoente) {
     long long resultado = 1;
     for (int i = 0; i < expoente; i++) {
@@ -15,6 +14,7 @@ int main() {
     printf("Digite um inteiro N (1 <= N <= 100000): ");
     scanf("%d", &N);
 
+    // Validacao da entrada
     if (N < 1 || N > 100000) {
         printf("Erro: N esta fora do intervalo valido (1 a 100000).\n");
         return 1;
@@ -24,19 +24,19 @@ int main() {
     if (N == 1) {
         printf("\n=== PASSO 1: FATORACAO PRIMA ===\n");
         printf("N = 1 nao possui fatores primos.\n");
-        printf("\n=== PASSO 2: CALCULO DE τ(N) ===\n");
-        printf("τ(1) = 1\n");
-        printf("\n=== PASSO 3: CALCULO DE σ(N) ===\n");
-        printf("σ(1) = 1\n");
+        printf("\n=== PASSO 2: CALCULO DE TAU(N) ===\n");
+        printf("tau(1) = 1\n");
+        printf("\n=== PASSO 3: CALCULO DE SIGMA(N) ===\n");
+        printf("sigma(1) = 1\n");
         printf("\n=== PASSO 4: CALCULO DA RAZAO DE EFICIENCIA ===\n");
-        printf("Razao de Eficiencia = 1.00\n");
+        printf("Razao de eficiencia = 1.00\n");
         return 0;
     }
 
     int n_copia = N;
-    int fatores_primos[100];
-    int expoentes[100];
-    int total_fatores = 0;
+    int fatores_primos[100]; // Armazena os fatores primos de N
+    int expoentes[100];      // Armazena os expoentes correspondentes
+    int total_fatores = 0;   // Contador de fatores encontrados
 
     printf("\n=== PASSO 1: FATORACAO PRIMA (Trial Division) ===\n");
 
@@ -53,7 +53,7 @@ int main() {
         total_fatores++;
     }
 
-    // Fatorar por números ímpares
+    // Fatorar por numeros impares
     for (int i = 3; i * i <= n_copia; i += 2) {
         if (n_copia % i == 0) {
             int count = 0;
@@ -68,7 +68,7 @@ int main() {
         }
     }
 
-    // Último fator primo (se restar)
+    // Ultimo fator primo (se restar)
     if (n_copia > 1) {
         fatores_primos[total_fatores] = n_copia;
         expoentes[total_fatores] = 1;
@@ -76,40 +76,37 @@ int main() {
         total_fatores++;
     }
 
-    printf("\n=== PASSO 2: CALCULO DE τ(N) (Numero de Divisores) ===\n");
+    printf("\n=== PASSO 2: CALCULO DE TAU(N) (Numero de Divisores) ===\n");
     long long tau = 1;
     for (int i = 0; i < total_fatores; i++) {
-        printf("τ atual = %lld × (%d + 1) = ", tau, expoentes[i]);
+        printf("tau atual = %lld * (%d + 1) = ", tau, expoentes[i]);
         tau *= (expoentes[i] + 1);
         printf("%lld (apos fator %d^%d)\n", tau, fatores_primos[i], expoentes[i]);
     }
 
-    printf("\n=== PASSO 3: CALCULO DE σ(N) (Soma dos Divisores) ===\n");
+    printf("\n=== PASSO 3: CALCULO DE SIGMA(N) (Soma dos Divisores) ===\n");
     long long sigma = 1;
     for (int i = 0; i < total_fatores; i++) {
         long long p = fatores_primos[i];
         int a = expoentes[i];
         
-        // Calcular σ(p^a) = (p^(a+1) - 1) / (p - 1)
         long long numerador = potencia_inteira(p, a + 1) - 1;
         long long denominador = p - 1;
         long long termo = numerador / denominador;
-        
-        printf("Para fator %lld^%d: σ = (%lld^(%d+1) - 1) / (%lld - 1) = ", p, a, p, a, p);
-        printf("(%lld - 1) / %lld = %lld / %lld = %lld\n", 
-               potencia_inteira(p, a + 1), denominador, numerador, denominador, termo);
-        
-        printf("σ atual = %lld × %lld = ", sigma, termo);
+
+        printf("Para fator %lld^%d:\n", p, a);
+        printf("  Calculando sigma(p^a) = (p^(a+1)-1)/(p-1)\n");
+        printf("  Numerador = %lld, Denominador = %lld, termo = %lld\n", numerador, denominador, termo);
+        printf("  sigma acumulado = %lld * %lld = ", sigma, termo);
         sigma *= termo;
         printf("%lld\n", sigma);
     }
 
     printf("\n=== PASSO 4: CALCULO DA RAZAO DE EFICIENCIA ===\n");
     double razao = (double)sigma / (double)tau;
-
-    printf("σ(N) = %lld\n", sigma);
-    printf("τ(N) = %lld\n", tau);
-    printf("Razao de Eficiencia = σ(N) / τ(N) = %.2f\n", razao);
+    printf("sigma(N) = %lld\n", sigma);
+    printf("tau(N) = %lld\n", tau);
+    printf("Razao de eficiencia = %.2f\n", razao);
 
     return 0;
 }
