@@ -39,7 +39,7 @@ ll funcao_g(ll x, ll n) {
 ll exponenciacao_modular_binaria(ll base, ll expoente, ll modulo) {
     ll resultado = 1 % modulo;
     ll passo = 0;
-    printf("Método: exponenciação modular binária\n");
+    printf("Metodo: exponenciacao modular binaria\n");
     
     while (expoente > 0) {
         printf("Passo %lld: base = %lld, expoente = %lld", ++passo, base, expoente);
@@ -77,7 +77,7 @@ ll exponenciacao_modular_teorema(ll base, ll expoente, ll modulo, int *teorema_u
             return exponenciacao_modular_binaria(base, expoente, modulo);
         }
         else {
-            printf("Aplicando Divisão Euclidiana (caso geral - MDC ≠ 1)\n");
+            printf("Aplicando Divisao Euclidiana (caso geral - MDC ≠ 1)\n");
             *teorema_usado = 3;
             return exponenciacao_modular_binaria(base, expoente, modulo);
         }
@@ -87,7 +87,7 @@ ll exponenciacao_modular_teorema(ll base, ll expoente, ll modulo, int *teorema_u
 /* Pollard Rho - fatoração de número composto */
 ll pollard_rho(ll n) {
     printf("\n--- Iniciando Pollard Rho para N = %lld ---\n", n);
-    printf("Função de iteração: g(x) = (x² + 1) mod N\n");
+    printf("Funcao de iteracao: g(x) = (x² + 1) mod N\n");
     printf("Semente inicial: x0 = 2\n");
     
     ll x = 2, y = 2, d = 1;
@@ -100,7 +100,7 @@ ll pollard_rho(ll n) {
         ll diferenca = x - y;
         if (diferenca < 0) diferenca = -diferenca;
 
-        printf("\nIteração %d:\n", ++iteracoes);
+        printf("\nIteracao %d:\n", ++iteracoes);
         printf("  x = %lld, y = %lld\n", x, y);
         printf("  |x - y| = %lld\n", diferenca);
         
@@ -113,7 +113,7 @@ ll pollard_rho(ll n) {
         }
     }
 
-    printf("\n>> Fator não trivial encontrado: %lld\n", d);
+    printf("\n>> Fator nao trivial encontrado: %lld\n", d);
     return d;
 }
 
@@ -142,17 +142,17 @@ ll inverso_modular(ll a, ll m) {
     ll x, y;
     ll mdc = euclides_estendido(a, m, &x, &y);
     
-    printf("Equação: %lld*%lld + %lld*%lld = %lld\n", a, x, m, y, mdc);
+    printf("Equacao: %lld*%lld + %lld*%lld = %lld\n", a, x, m, y, mdc);
     
     if (mdc != 1) {
-        printf("ERRO: Não existe inverso, pois MDC(%lld, %lld) = %lld ≠ 1\n", a, m, mdc);
+        printf("ERRO: Nao existe inverso, pois MDC(%lld, %lld) = %lld ≠ 1\n", a, m, mdc);
         return -1;
     }
     
     /* Ajusta para resultado positivo */
     ll inv = (x % m + m) % m;
     printf("Inverso encontrado: %lld\n", inv);
-    printf("Verificação: %lld * %lld mod %lld = %lld\n", a, inv, m, (a * inv) % m);
+    printf("Verificacao: %lld * %lld mod %lld = %lld\n", a, inv, m, (a * inv) % m);
     
     return inv;
 }
@@ -174,47 +174,55 @@ char codigo_para_letra(int codigo) {
 /* -------------------- Programa Principal -------------------- */
 int main() {
     ll N1, N2;
-    printf("=== Questão 1 – RSA com Pollard Rho ===\n");
+    printf("=== Questao 1 RSA com Pollard Rho ===\n");
     printf("Digite N1 (deve ser produto de dois primos distintos, 100-9999): ");
     scanf("%lld", &N1);
     printf("Digite N2 (deve ser produto de dois primos distintos, 100-9999): ");
     scanf("%lld", &N2);
 
-    /* validações */
-    if (N1 < 100 || N1 > 9999 || N2 < 100 || N2 > 9999) {
-        printf("\nERRO: N1 e N2 devem estar entre 100 e 9999.\n");
-        return 0;
-    }
-    
-    if (N1 == N2) {
-        printf("\nERRO: N1 e N2 devem ser diferentes.\n");
-        return 0;
-    }
+    /* Validacoes iniciais */
+if (N1 < 100 || N1 > 9999 || N2 < 100 || N2 > 9999) {
+    printf("\nERRO: N1 e N2 devem estar entre 100 e 9999.\n");
+    return 0;
+}
 
-    printf("\n=== ETAPA 1: Fatoração usando Método ρ de Pollard ===\n");
+/* Condicao 1: N1 e N2 NAO podem ser primos */
+if (eh_primo(N1) || eh_primo(N2)) {
+    printf("\nERRO: N1 e N2 NAO podem ser numeros primos. Digite apenas produtos de dois primos distintos.\n");
+    return 0;
+}
+
+/* Condicao 2: N1 e N2 devem ser diferentes */
+if (N1 == N2) {
+    printf("\nERRO: N1 e N2 devem ser diferentes.\n");
+    return 0;
+}
+
+
+    printf("\n=== ETAPA 1: Fatoracao usando Metodo p de Pollard ===\n");
     
     ll p = pollard_rho(N1);
     if (p == -1) {
-        printf("\nERRO: Falha na fatoração de N1.\n");
+        printf("\nERRO: Falha na fatoracao de N1.\n");
         return 0;
     }
     ll q1 = N1 / p;
     
     ll q = pollard_rho(N2);
     if (q == -1) {
-        printf("\nERRO: Falha na fatoração de N2.\n");
+        printf("\nERRO: Falha na fatoracao de N2.\n");
         return 0;
     }
     ll q2 = N2 / q;
 
     /* Verifica se os fatores são primos */
     if (!eh_primo(p) || !eh_primo(q1)) {
-        printf("\nERRO: Fatores de N1 não são primos.\n");
+        printf("\nERRO: Fatores de N1 nao sao primos.\n");
         return 0;
     }
     
     if (!eh_primo(q) || !eh_primo(q2)) {
-        printf("\nERRO: Fatores de N2 não são primos.\n");
+        printf("\nERRO: Fatores de N2 nao sao primos.\n");
         return 0;
     }
 
@@ -223,12 +231,12 @@ int main() {
     printf("N2 = %lld = %lld × %lld\n", N2, q, q2);
     printf("Usando p = %lld (de N1) e q = %lld (de N2)\n", p, q);
 
-    printf("\n=== ETAPA 2: Geração das Chaves RSA ===\n");
+    printf("\n=== ETAPA 2: Geracao das Chaves RSA ===\n");
     
     ll n = p * q;
     ll phi = (p - 1) * (q - 1);
 
-    printf("Cálculos:\n");
+    printf("Calculos:\n");
     printf("  n = p × q = %lld × %lld = %lld\n", p, q, n);
     printf("  φ(n) = (p-1) × (q-1) = %lld × %lld = %lld\n", p-1, q-1, phi);
 
@@ -239,41 +247,71 @@ int main() {
             break;
         }
     }
-    printf("\nExpoente público e encontrado: %lld\n", e);
+    printf("\nExpoente publico e encontrado: %lld\n", e);
 
     /* Calcula o expoente privado D */
     ll d = inverso_modular(e, phi);
     if (d == -1) {
-        printf("ERRO: Não foi possível calcular o expoente privado D.\n");
+        printf("ERRO: Nao foi possivel calcular o expoente privado D.\n");
         return 0;
     }
 
     printf("\n=== Chaves RSA Geradas: ===\n");
-    printf("Chave pública: (n=%lld, e=%lld)\n", n, e);
+    printf("Chave publica: (n=%lld, e=%lld)\n", n, e);
     printf("Chave privada: (n=%lld, d=%lld)\n", n, d);
 
-    printf("\n=== ETAPA 3: Codificação e Decodificação ===\n");
+    printf("\n=== ETAPA 3: Codificacao e Decodificacao ===\n");
     
     getchar(); /* consumir newline */
     char mensagem[256];
-    printf("Digite a mensagem (apenas letras maiúsculas, minúsculas e espaços): ");
+    int mensagem_valida = 0;
+    printf("Digite a mensagem (apenas letras maiusculas, minusculas e espacos): ");
     fgets(mensagem, sizeof(mensagem), stdin);
     mensagem[strcspn(mensagem, "\n")] = 0;
 
-    printf("\n--- Pré-codificação ---\n");
-    printf("Sistema: A=11, B=12, ..., Z=36, ESPAÇO=00\n");
-    
-    int blocos[256], tamanho = 0;
+// getchar(); /* consumir newline */
+// char mensagem[256];
+
+
+while (!mensagem_valida) {
+    printf("Digite a mensagem (apenas letras maiusculas, minusculas e espacos): ");
+    fgets(mensagem, sizeof(mensagem), stdin);
+    mensagem[strcspn(mensagem, "\n")] = 0;
+
+    mensagem_valida = 1; /* assume que e valida ate encontrar erro */
+
     for (int i = 0; mensagem[i]; i++) {
-        int codigo = letra_para_codigo(mensagem[i]);
-        if (codigo >= 0) {
-            blocos[tamanho++] = codigo;
-            printf("'%c' -> %02d\n", mensagem[i], codigo);
+        char c = mensagem[i];
+
+        if ((c >= '0' && c <= '9')) {
+            printf("\nERRO: A mensagem contem numeros ('%c'). Digite apenas letras e espacos.\n\n", c);
+            mensagem_valida = 0;
+            break;
+        }
+        if (letra_para_codigo(c) == -1) {
+            printf("\nERRO: Caractere invalido encontrado ('%c'). Use apenas letras e espacos.\n\n", c);
+            mensagem_valida = 0;
+            break;
         }
     }
+}
+
+/* So chega aqui se a mensagem for valida */
+printf("\n--- Pre-codificacao ---\n");
+printf("Sistema: A=11, B=12, ..., Z=36, ESPACO=00\n");
+
+int blocos[256], tamanho = 0;
+for (int i = 0; mensagem[i]; i++) {
+    int codigo = letra_para_codigo(mensagem[i]);
+    blocos[tamanho++] = codigo;
+    printf("'%c' -> %02d\n", mensagem[i], codigo);
+}
+
+
+
 
     printf("\n--- Criptografia (M → C) ---\n");
-    printf("Fórmula: C ≡ M^e (mod n)\n");
+    printf("Formula: C ≡ M^e (mod n)\n");
     
     ll criptografado[256];
     for (int i = 0; i < tamanho; i++) {
@@ -284,13 +322,13 @@ int main() {
     }
 
     printf("\n--- Mensagem Criptografada ---\n");
-    printf("Representação numérica: ");
+    printf("Representacao numerica: ");
     for (int i = 0; i < tamanho; i++) {
         printf("%lld ", criptografado[i]);
     }
     printf("\n");
 
-    printf("Tentativa de representação em caracteres: ");
+    printf("Tentativa de representacao em caracteres: ");
     for (int i = 0; i < tamanho; i++) {
         /* Converte explicitamente para int antes de usar como char */
         int valor_char = (int)criptografado[i];
@@ -306,7 +344,7 @@ int main() {
 
     printf("\n--- Resumo da Criptografia ---\n");
     printf("Mensagem original: %s\n", mensagem);
-    printf("Pré-codificação:   ");
+    printf("Pre-codificacao:   ");
     for (int i = 0; i < tamanho; i++) {
         printf("%02d ", blocos[i]);
     }
@@ -318,7 +356,7 @@ int main() {
     printf("\n");
 
     printf("\n--- Descriptografia (C → M) ---\n");
-    printf("Fórmula: M ≡ C^d (mod n)\n");
+    printf("Formula: M ≡ C^d (mod n)\n");
     
     int decodificado[256];
     for (int i = 0; i < tamanho; i++) {
@@ -328,7 +366,7 @@ int main() {
         printf("Resultado: M' = %02d\n", decodificado[i]);
     }
 
-    printf("\n--- Reconversão numérica em texto ---\n");
+    printf("\n--- Reconversao numerica em texto ---\n");
     printf("Mensagem decodificada: ");
     for (int i = 0; i < tamanho; i++) {
         printf("%c", codigo_para_letra(decodificado[i]));
@@ -336,7 +374,7 @@ int main() {
     printf("\n");
 
     /* Verificação final */
-    printf("\n=== Verificação ===\n");
+    printf("\n=== Verificacao ===\n");
     printf("Mensagem original: %s\n", mensagem);
     printf("Mensagem decifrada: ");
     for (int i = 0; i < tamanho; i++) {
@@ -353,9 +391,9 @@ int main() {
     }
     
     if (iguais) {
-        printf("✓ CONFIRMAÇÃO: Mensagem decifrada é IDÊNTICA à original!\n");
+        printf("CONFIRMACAO: Mensagem decifrada e IDENTICA a original!\n");
     } else {
-        printf("✗ ERRO: Mensagem decifrada NÃO coincide com a original!\n");
+        printf("ERRO: Mensagem decifrada NAO coincide com a original!\n");
     }
 
     printf("\n=== FIM DO PROGRAMA ===\n");
