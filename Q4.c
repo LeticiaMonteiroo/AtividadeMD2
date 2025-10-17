@@ -12,7 +12,7 @@ int mdc(int a, int b) {
     return a;
 }
 
-// Função de Euclides estendido para encontrar o inverso modular
+// Função de Euclides estendido para encontrar o inverso modula
 int inverso_modular(int a, int m) {
     printf("Calculando inverso modular de %d mod %d:\n", a, m);
     int m0 = m, x0 = 0, x1 = 1, q, t;
