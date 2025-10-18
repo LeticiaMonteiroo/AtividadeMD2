@@ -13,4 +13,7 @@ gcc nomedoarquivo.c -o nomeescolhido
 ## Rodar o código
 .\nomeescolhido.exe  
 
+## Questão 4 
+A resposta do V ou F está dentro do Código 
+
 
