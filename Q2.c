@@ -3,7 +3,7 @@
 
 typedef long long ll;
 
-/* MDC com exibicao passo a passo */
+
 ll mdcComPassos(ll a, ll b) {
     ll resto;
     a = llabs(a);
@@ -19,7 +19,7 @@ ll mdcComPassos(ll a, ll b) {
     return a;
 }
 
-/* MMC entre dois inteiros com protecao/precisao */
+
 ll mmcDois(ll a, ll b) {
     if (a == 0 || b == 0) return 0;
     
@@ -28,7 +28,7 @@ ll mmcDois(ll a, ll b) {
     printf("      -> Calculando MMC(%lld, %lld)\n", a, b);
     ll m = mdcComPassos(a, b);
     
-    /* calcular (a / m) * b para reduzir chance de overflow */
+
     ll fator = a / m;
     ll mmc = fator * b;
     mmc = llabs(mmc);
@@ -36,7 +36,7 @@ ll mmcDois(ll a, ll b) {
     return mmc;
 }
 
-/* MMC acumulado com otimizacao: se ultrapassar 50, sabemos que final >= atual */
+
 ll mmcAcumulado(int ciclos[], int N) {
     ll acumulado = ciclos[0];
     printf("   -> Inicializando MMC acumulado = %lld (ciclo 1 = %d)\n", acumulado, ciclos[0]);
@@ -60,7 +60,7 @@ ll mmcAcumulado(int ciclos[], int N) {
     return acumulado;
 }
 
-/* Verifica se um ano é múltiplo de todos os ciclos */
+
 int ehMultiploDeTodos(int ano, int ciclos[], int N) {
     for (int i = 0; i < N; i++) {
         if (ano % ciclos[i] != 0) return 0;
@@ -68,12 +68,12 @@ int ehMultiploDeTodos(int ano, int ciclos[], int N) {
     return 1;
 }
 
-/* Programa principal */
+
 int main() {
     int N;
     int ciclos[10];
 
-    /* ETAPA 1: Entrada e validacao */
+
     printf("ETAPA 1: Entrada de Dados\n");
     printf("-------------------------\n");
     printf("Passo 1.1 - Ler N (1 <= N <= 10)\n");
@@ -100,7 +100,7 @@ int main() {
         }
     }
 
-    /* ETAPA 2: Calculo do MMC */
+
     printf("\nETAPA 2: Calculo do Minimo Multiplo Comum (MMC)\n");
     printf("------------------------------------------------\n");
     printf("Passo 2.1 - Justificativa: o primeiro ano em que todos os ciclos coincidem\n");
@@ -109,7 +109,7 @@ int main() {
     ll resultado_mmc = mmcAcumulado(ciclos, N);
     printf("Resultado final (MMC de todos os ciclos) = %lld\n", resultado_mmc);
 
-    /* ETAPA 3: Verificacao no intervalo 1..50 */
+    
     printf("\nETAPA 3: Verificacao do limite de anos (1 a 50)\n");
     printf("------------------------------------------------\n");
 
@@ -132,7 +132,7 @@ int main() {
         }
     }
 
-    /* ETAPA 4: Conclusao */
+  
     printf("\nETAPA 4: Conclusao\n");
     printf("------------------\n");
     if (ano_encontrado > 0) {
@@ -141,7 +141,6 @@ int main() {
         printf("Resultado Final: Nao existe ano valido entre 1 e 50 em que todas as chaves sejam usadas simultaneamente.\n");
     }
 
-    /* Confirmacao adicional */
     printf("\nPasso final - Confirmacao:\n");
     if (resultado_mmc > 0 && resultado_mmc <= 50 && ano_encontrado == resultado_mmc) {
         printf("  Observacao: MMC calculado = %lld. O primeiro ano sincronizado e %lld.\n", resultado_mmc, resultado_mmc);
