@@ -1,3 +1,8 @@
+//Maria Samara Alves Silva - 231027005
+//Letícia da Silva Monteiro - 231026859
+
+
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -17,7 +22,7 @@ int eh_primo(ll n) {
 }
 
 ll mdc(ll a, ll b) {
-    printf(">> Calculando MDC(%lld, %lld)\n", a, b);
+    printf("Calculando MDC(%lld, %lld)\n", a, b);
     ll passo = 1;
     ll a_orig = a, b_orig = b;
     while (b != 0) {
@@ -46,7 +51,7 @@ ll euclides_estendido(ll a, ll b, ll *x, ll *y) {
 
 
 ll inverso_modular(ll a, ll m) {
-    printf(">> Calculando inverso modular de %lld mod %lld\n", a, m);
+    printf("Calculando inverso modular de %lld mod %lld\n", a, m);
     ll x, y;
     ll g = euclides_estendido(a, m, &x, &y);
     if (g != 1) {
@@ -116,9 +121,6 @@ ll exponenciacao_modular(ll base, ll expoente, ll modulo, int *teorema_usado) {
         } else {
             *teorema_usado = 3;
             printf("   Aplicando Divisao Euclidiana (MDC(base, n) != 1)\n");
-            // Para criptografia (expoente 'e' pequeno), nao reduzir e' ok.
-            // Para descriptografia (expoente 'd' grande), esta logica sera
-            // tratada de forma diferente no main().
             return exponenciacao_modular_binaria(base, expoente, modulo);
         }
     }
@@ -127,7 +129,7 @@ ll exponenciacao_modular(ll base, ll expoente, ll modulo, int *teorema_usado) {
 
 
 ll pollard_rho(ll n) {
-    printf(">> Pollard Rho para n = %lld\n", n);
+    printf("Pollard Rho para n = %lld\n", n);
     if (n % 2 == 0) {
         printf("   Fator 2 encontrado\n");
         return 2;
