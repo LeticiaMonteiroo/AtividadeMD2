@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <limits.h> 
 
 // Função para calcular p^exp de forma segura (evitando overflow quando possível)
 long long potencia_segura(long long p, int exp) {
