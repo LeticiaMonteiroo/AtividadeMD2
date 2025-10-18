@@ -7,7 +7,7 @@
 typedef long long ll;
 
 /* ============================================================
-   FUNÇÕES MATEMÁTICAS OBRIGATÓRIAS (EUCLIDES, FERMAT, EULER)
+   FUNCOES MATEMATICAS OBRIGATORIAS (EUCLIDES, FERMAT, EULER)
    ============================================================ */
 
 int eh_primo(ll n) {
@@ -33,7 +33,7 @@ ll mdc(ll a, ll b) {
     return a;
 }
 
-/* Algoritmo de Euclides Estendido CORRIGIDO */
+/* Algoritmo de Euclides Estendido */
 ll euclides_estendido(ll a, ll b, ll *x, ll *y) {
     if (b == 0) {
         *x = 1;
@@ -47,22 +47,22 @@ ll euclides_estendido(ll a, ll b, ll *x, ll *y) {
     return mdc_;
 }
 
-/* Inverso modular usando Euclides Estendido CORRIGIDO */
+/* Inverso modular usando Euclides Estendido */
 ll inverso_modular(ll a, ll m) {
     printf(">> Calculando inverso modular de %lld mod %lld\n", a, m);
     ll x, y;
     ll g = euclides_estendido(a, m, &x, &y);
     if (g != 1) {
-        printf("   ERRO: MDC(%lld, %lld) = %lld ≠ 1, não existe inverso!\n", a, m, g);
+        printf("   ERRO: MDC(%lld, %lld) = %lld != 1, nao existe inverso!\n", a, m, g);
         return -1;
     }
     ll inv = (x % m + m) % m;
     printf("   Inverso modular de %lld mod %lld = %lld\n", a, m, inv);
-    printf("   Verificação: (%lld * %lld) mod %lld = %lld\n", a, inv, m, (a * inv) % m);
+    printf("   Verificacao: (%lld * %lld) mod %lld = %lld\n", a, inv, m, (a * inv) % m);
     return inv;
 }
 
-/* Função para calcular φ(n) - CORREÇÃO CRÍTICA */
+/* Funcao para calcular phi(n) */
 ll calcular_phi(ll n) {
     ll result = n;
     for (ll p = 2; p * p <= n; p++) {
@@ -75,13 +75,13 @@ ll calcular_phi(ll n) {
     return result;
 }
 
-/* Exponenciação modular binária CORRIGIDA */
+/* Exponenciacao modular binaria */
 ll exponenciacao_modular_binaria(ll base, ll expoente, ll modulo) {
     if (modulo == 1) return 0;
     ll resultado = 1;
     base = base % modulo;
     
-    printf("   Exponenciação binária: ");
+    printf("   Exponenciacao binaria: ");
     int passo = 0;
     while (expoente > 0) {
         if (expoente % 2 == 1) {
@@ -96,7 +96,7 @@ ll exponenciacao_modular_binaria(ll base, ll expoente, ll modulo) {
     return resultado;
 }
 
-/* Exponenciação modular com indicação do teorema usado - CORRIGIDA */
+/* Exponenciacao modular com indicacao do teorema usado */
 ll exponenciacao_modular(ll base, ll expoente, ll modulo, int *teorema_usado) {
     printf(">> Calculando %lld^%lld mod %lld\n", base, expoente, modulo);
     
@@ -113,19 +113,22 @@ ll exponenciacao_modular(ll base, ll expoente, ll modulo, int *teorema_usado) {
             printf("   Aplicando Teorema de Euler (MDC(base, n) = 1)\n");
             ll phi = calcular_phi(modulo);
             ll exp_red = expoente % phi;
-            printf("   φ(%lld) = %lld\n", modulo, phi);
+            printf("   phi(%lld) = %lld\n", modulo, phi);
             printf("   Expoente reduzido: %lld mod %lld = %lld\n", expoente, phi, exp_red);
             return exponenciacao_modular_binaria(base, exp_red, modulo);
         } else {
             *teorema_usado = 3;
-            printf("   Aplicando Divisão Euclidiana (MDC(base, n) ≠ 1)\n");
+            printf("   Aplicando Divisao Euclidiana (MDC(base, n) != 1)\n");
+            // Para criptografia (expoente 'e' pequeno), nao reduzir e' ok.
+            // Para descriptografia (expoente 'd' grande), esta logica sera
+            // tratada de forma diferente no main().
             return exponenciacao_modular_binaria(base, expoente, modulo);
         }
     }
 }
 
 /* ============================================================
-   MÉTODO ρ DE POLLARD CORRIGIDO
+   METODO rho DE POLLARD 
    ============================================================ */
 
 ll pollard_rho(ll n) {
@@ -138,6 +141,7 @@ ll pollard_rho(ll n) {
     ll x = 2, y = 2, d = 1;
     int iteracao = 0;
     
+    // Funcao g(x) = (x*x + 1) % n
     while (d == 1) {
         x = (x * x + 1) % n;
         y = (y * y + 1) % n;
@@ -147,15 +151,15 @@ ll pollard_rho(ll n) {
         d = mdc(diferenca, n);
         
         iteracao++;
-        printf("   Iteração %d: x=%lld, y=%lld, |x-y|=%lld, MDC=%lld\n", 
+        printf("   Iteracao %d: x=%lld, y=%lld, |x-y|=%lld, MDC=%lld\n", 
                iteracao, x, y, diferenca, d);
         
         if (d > 1 && d < n) {
-            printf("   ✓ Fator não trivial encontrado: %lld\n", d);
+            printf("   * Fator nao trivial encontrado: %lld\n", d);
             return d;
         }
         if (iteracao > 100) {
-            printf("   Limite de iterações atingido\n");
+            printf("   Limite de iteracoes atingido\n");
             break;
         }
     }
@@ -171,7 +175,7 @@ ll pollard_rho(ll n) {
 }
 
 /* ============================================================
-   SISTEMA DE CÓDIGO DAS LETRAS CORRIGIDO
+   SISTEMA DE CODIGO DAS LETRAS 
    ============================================================ */
 
 int char_para_codigo(char c) {
@@ -179,7 +183,7 @@ int char_para_codigo(char c) {
     c = toupper(c);
     if (c >= 'A' && c <= 'Z') 
         return 11 + (c - 'A');
-    return 0; // Caracteres inválidos viram espaço
+    return 0; // Caracteres invalidos viram espaco
 }
 
 char codigo_para_char(int codigo) {
@@ -189,48 +193,36 @@ char codigo_para_char(int codigo) {
     return '?';
 }
 
-/* Função para criar blocos de 2 dígitos - CORREÇÃO IMPORTANTE */
-void criar_blocos_2_digitos(const char *msg, int blocos[], int *num_blocos) {
+/* Funcao para criar blocos de 2 digitos (UM BLOCO POR CARACTERE) */
+void criar_blocos(const char *msg, int blocos[], int *num_blocos) {
     *num_blocos = 0;
     int len = strlen(msg);
     
-    for (int i = 0; i < len; i += 2) {
-        int primeiro = char_para_codigo(msg[i]);
-        int segundo = (i + 1 < len) ? char_para_codigo(msg[i + 1]) : 0;
-        blocos[*num_blocos] = primeiro * 100 + segundo;
+    printf(">> Pre-codificacao (blocos de 2 digitos):\n");
+    for (int i = 0; i < len; i++) {
+        blocos[*num_blocos] = char_para_codigo(msg[i]);
+        printf("   Bloco %d ('%c'): %02d\n", i + 1, msg[i], blocos[*num_blocos]);
         (*num_blocos)++;
-    }
-    
-    printf(">> Pré-codificação (blocos de 2 dígitos):\n");
-    for (int i = 0; i < *num_blocos; i++) {
-        printf("   Bloco %d: %04d\n", i + 1, blocos[i]);
     }
 }
 
-void decodificar_blocos_2_digitos(int blocos[], int num_blocos, char *msg) {
+/* Funcao para decodificar blocos de 2 digitos */
+void decodificar_blocos(int blocos[], int num_blocos, char *msg) {
     int pos = 0;
     for (int i = 0; i < num_blocos; i++) {
-        int primeiro = blocos[i] / 100;
-        int segundo = blocos[i] % 100;
-        
-        if (primeiro != 0) {
-            msg[pos++] = codigo_para_char(primeiro);
-        }
-        if (segundo != 0) {
-            msg[pos++] = codigo_para_char(segundo);
-        }
+        msg[pos++] = codigo_para_char(blocos[i]);
     }
     msg[pos] = '\0';
 }
 
 /* ============================================================
-   PROGRAMA PRINCIPAL CORRIGIDO
+   PROGRAMA PRINCIPAL 
    ============================================================ */
 
 int main() {
-    printf("=== QUESTÃO 1 – RSA COM POLLARD RHO (VERSÃO CORRIGIDA) ===\n\n");
+    printf("=== QUESTAO 1 - RSA COM POLLARD RHO ===\n\n");
     
-    /* Entrada com validação */
+    /* Entrada com validacao */
     ll N1, N2;
     printf("Digite N1 (produto de primos distintos, 100-9999): ");
     scanf("%lld", &N1);
@@ -238,7 +230,7 @@ int main() {
     scanf("%lld", &N2);
     
     if (N1 < 100 || N1 > 9999 || N2 < 100 || N2 > 9999) {
-        printf("ERRO: Números devem estar entre 100 e 9999!\n");
+        printf("ERRO: Numeros devem estar entre 100 e 9999!\n");
         return 1;
     }
     if (N1 == N2) {
@@ -246,14 +238,14 @@ int main() {
         return 1;
     }
 
-    printf("\n=== ETAPA 1: FATORAÇÃO (MÉTODO ρ DE POLLARD) ===\n");
+    printf("\n=== ETAPA 1: FATORACAO (METODO rho DE POLLARD) ===\n");
     
     ll p = pollard_rho(N1);
     ll q1 = N1 / p;
     
-    // Verifica se o segundo fator é primo
+    // Verifica se o segundo fator e primo
     if (!eh_primo(q1)) {
-        printf(">> Segundo fator de N1 não é primo, refinando...\n");
+        printf(">> Segundo fator de N1 nao e primo, refinando...\n");
         ll temp = q1;
         q1 = pollard_rho(temp);
         p = temp / q1;
@@ -263,30 +255,30 @@ int main() {
     ll q2 = N2 / q;
     
     if (!eh_primo(q2)) {
-        printf(">> Segundo fator de N2 não é primo, refinando...\n");
+        printf(">> Segundo fator de N2 nao e primo, refinando...\n");
         ll temp = q2;
         q2 = pollard_rho(temp);
         q = temp / q2;
     }
     
     printf("\n=== FATORES ENCONTRADOS ===\n");
-    printf("N1 = %lld = %lld × %lld\n", N1, p, q1);
-    printf("N2 = %lld = %lld × %lld\n", N2, q, q2);
+    printf("N1 = %lld = %lld x %lld\n", N1, p, q1);
+    printf("N2 = %lld = %lld x %lld\n", N2, q, q2);
     printf("Usando p = %lld (de N1) e q = %lld (de N2)\n", p, q);
 
-    /* Etapa 2: Geração das chaves RSA CORRIGIDA */
-    printf("\n=== ETAPA 2: GERAÇÃO DAS CHAVES RSA ===\n");
+    /* Etapa 2: Geracao das chaves RSA */
+    printf("\n=== ETAPA 2: GERACAO DAS CHAVES RSA ===\n");
     
     ll n = p * q;
     ll phi = (p - 1) * (q - 1);
     
-    printf("n = p × q = %lld × %lld = %lld\n", p, q, n);
-    printf("φ(n) = (p-1) × (q-1) = %lld × %lld = %lld\n", p-1, q-1, phi);
+    printf("n = p x q = %lld x %lld = %lld\n", p, q, n);
+    printf("phi(n) = (p-1) x (q-1) = %lld x %lld = %lld\n", p-1, q-1, phi);
 
-    /* Encontra expoente público e - CORRIGIDO */
+    /* Encontra expoente publico e */
     ll e;
-    printf("\nBuscando expoente público e (MDC(e, φ(n)) = 1)...\n");
-    for (e = 2; e < n; e++) {
+    printf("\nBuscando expoente publico e (MDC(e, phi(n)) = 1)...\n");
+    for (e = 2; e < phi; e++) { // Otimizado: e < phi, nao e < n
         if (mdc(e, phi) == 1) {
             break;
         }
@@ -295,46 +287,46 @@ int main() {
             break;
         }
     }
-    printf("Expoente público e = %lld\n", e);
+    printf("Expoente publico e = %lld\n", e);
 
     ll d = inverso_modular(e, phi);
     if (d == -1) {
-        printf("ERRO CRÍTICO: Não foi possível encontrar inverso modular!\n");
+        printf("ERRO CRITICO: Nao foi possivel encontrar inverso modular!\n");
         return 1;
     }
 
     printf("\n=== CHAVES GERADAS ===\n");
-    printf("CHAVE PÚBLICA: (n=%lld, e=%lld)\n", n, e);
+    printf("CHAVE PUBLICA: (n=%lld, e=%lld)\n", n, e);
     printf("CHAVE PRIVADA: (n=%lld, d=%lld)\n", n, d);
 
-    /* Etapa 3: Criptografia e Descriptografia CORRIGIDA */
+    /* Etapa 3: Criptografia e Descriptografia */
     getchar(); // Limpa buffer
     char msg_original[100];
-    printf("\nDigite a mensagem (somente letras e espaços): ");
+    printf("\nDigite a mensagem (somente letras e espacos): ");
     fgets(msg_original, sizeof(msg_original), stdin);
     msg_original[strcspn(msg_original, "\n")] = 0;
     
-    // Converte para maiúsculas
+    // Converte para maiusculas
     for (int i = 0; msg_original[i]; i++) {
         msg_original[i] = toupper(msg_original[i]);
     }
 
-    /* Pré-codificação com blocos de 2 dígitos */
+    /* Pre-codificacao com blocos de 2 digitos (1 por char) */
     int blocos[100], num_blocos;
-    criar_blocos_2_digitos(msg_original, blocos, &num_blocos);
+    criar_blocos(msg_original, blocos, &num_blocos);
 
     /* Criptografia */
     printf("\n=== ETAPA 3: CRIPTOGRAFIA ===\n");
     ll texto_cifrado[100];
     
     for (int i = 0; i < num_blocos; i++) {
-        printf("\n--- Criptografando Bloco %d: %04d ---\n", i + 1, blocos[i]);
+        printf("\n--- Criptografando Bloco %d: %02d ---\n", i + 1, blocos[i]);
         int teorema;
         texto_cifrado[i] = exponenciacao_modular(blocos[i], e, n, &teorema);
-        printf("Resultado: %04d → %lld\n", blocos[i], texto_cifrado[i]);
+        printf("Resultado: %02d -> %lld\n", blocos[i], texto_cifrado[i]);
     }
 
-    printf("\nMensagem criptografada (numérica): ");
+    printf("\nMensagem criptografada (numerica): ");
     for (int i = 0; i < num_blocos; i++) 
         printf("%lld ", texto_cifrado[i]);
     printf("\n");
@@ -343,26 +335,34 @@ int main() {
     printf("\n=== DESCRIPTOGRAFIA ===\n");
     int texto_decifrado[100];
     
+    // CORRECAO 2: Reducao de 'd' e' sempre d % phi(n) para RSA
+    ll d_reduzido = d % phi;
+    printf(">> Usando expoente 'd' reduzido para descriptografia\n");
+    printf("   Teorema de Euler (Generalizado/RSA)\n");
+    printf("   d_red = %lld mod %lld = %lld\n", d, phi, d_reduzido);
+    
     for (int i = 0; i < num_blocos; i++) {
         printf("\n--- Descriptografando Bloco %d: %lld ---\n", i + 1, texto_cifrado[i]);
-        int teorema;
-        texto_decifrado[i] = exponenciacao_modular(texto_cifrado[i], d, n, &teorema);
-        printf("Resultado: %lld → %04d\n", texto_cifrado[i], texto_decifrado[i]);
+        
+        // Chamada direta a funcao binaria com o expoente ja reduzido
+        texto_decifrado[i] = exponenciacao_modular_binaria(texto_cifrado[i], d_reduzido, n);
+        
+        printf("Resultado: %lld -> %02d\n", texto_cifrado[i], texto_decifrado[i]);
     }
 
-    /* Reconversão para texto */
+    /* Reconversao para texto */
     char msg_decifrada[100];
-    decodificar_blocos_2_digitos(texto_decifrado, num_blocos, msg_decifrada);
+    decodificar_blocos(texto_decifrado, num_blocos, msg_decifrada);
 
-    /* Verificação final */
-    printf("\n=== VERIFICAÇÃO FINAL ===\n");
+    /* Verificacao final */
+    printf("\n=== VERIFICACAO FINAL ===\n");
     printf("Mensagem original:  '%s'\n", msg_original);
     printf("Mensagem decifrada: '%s'\n", msg_decifrada);
     
     if (strcmp(msg_original, msg_decifrada) == 0) {
         printf("Mensagem recuperada perfeitamente!\n");
     } else {
-        printf("As mensagens não coincidem!\n");
+        printf("As mensagens nao coincidem!\n");
     }
 
     printf("\n=== FIM DO PROGRAMA ===\n");

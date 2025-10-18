@@ -1,9 +1,8 @@
-/* 
-  ATIVIDADE MD2 - QUESTÃO 04
-  Nome: SEU_NOME
-  Matrícula: SUA_MATRICULA
-  Observações: implementação em C sem uso de bibliotecas prontas para mdc/inverso/exponenciação.
-*/
+
+//   ATIVIDADE MD2 - QUESTÃO 04
+//   Nomes: Letícia da Silva Monteiro - 231026859
+//          Maria Samara A. Silva - 231027005
+
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -80,7 +79,7 @@ int fiEuler(int n) {
 }
 
 // --------------------------------------------------
-// [Função] inverseModular (CORRIGIDA)
+// [Função] inverseModular 
 // --------------------------------------------------
 int inverseModular(int a, int m) {
     printf("[PASSO 2] Calculando inverso modular de %d mod %d:\n", a, m);
@@ -112,7 +111,7 @@ int inverseModular(int a, int m) {
         printf("    [INV] q=%d, x0=%d, x1=%d, a=%d, m=%d\n", q, x0, x1, temp_a, temp_m);
     }
 
-    // 🔍 CORREÇÃO: Verificar se o inverso existe APÓS o algoritmo
+    //Verificar se o inverso existe APÓS o algoritmo
     if (temp_a != 1) {
         printf("  [ERRO] mdc(%d, %d) != 1 → inverso não existe.\n\n", a, m0);
         return -1;
@@ -211,7 +210,7 @@ int powMod(int base, int exp, int mod) {
 }
 
 // --------------------------------------------------
-// [main] (CORRIGIDO)
+// [main] 
 // --------------------------------------------------
 int main() {
 #ifdef _WIN32
@@ -236,7 +235,6 @@ int main() {
         return 0; 
     }
 
-    // 🔍 CORREÇÃO: Verificar MDC apenas uma vez
     if (mdccmPassos(G, Zn) != 1) {
         printf("[ERRO] Não existe inverso modular (mdc != 1)\n");
         return 0;
@@ -244,7 +242,6 @@ int main() {
 
     int inv = inverseModular(G, Zn);
     if (inv == -1) { 
-        // O erro já foi mostrado dentro da função inverseModular
         return 0; 
     }
 
@@ -265,3 +262,36 @@ int main() {
     printf("%d^%d mod %d = %d\n", a, x, n1, resultado);
     return 0;
 }
+
+// 
+// A saída dos valores: H:7, G:3, Zn:11, x:10, n1:13
+
+// Algoritmo de Euclides: 3 mod 11 = 3
+// Algoritmo de Euclides: 11 mod 3 = 2
+// Algoritmo de Euclides: 3 mod 2 = 1
+// Algoritmo de Euclides: 2 mod 1 = 0
+
+// Resultado MDC (3,11) = 1
+
+// Inverso modular de 3 mod 11 = 4.
+// Multiplicação modular: 7 * 4 mod 11 = 6
+// Sendo 4 o inverso de 3.
+// Valor final da congruência: 4
+//     
+
+
+// Questões verdadeiro ou falso:
+
+// ( V ) O algoritmo de Euclides estendido é utilizado para calcular o inverso modular de um número.
+// ( F ) Se mdc(G, Zn) ≠ 1, o programa ainda consegue encontrar o inverso de G em Zn.
+// ( V ) A operação (H * inverso) % Zn representa a divisão modular de H por G.
+// ( V ) Se n1 for primo, o código aplica o Pequeno Teorema de Fermat para simplificar o cálculo de
+//     a^x mod n1.
+
+// ( F ) A função powMod implementa o cálculo de potência modular utilizando multiplicações diretas
+//     sem otimização.
+
+// ( V ) Quando o resultado do inverso é negativo, o código ajusta o valor somando o módulo m0.
+// ( V ) O cálculo de fi(n1) (função totiente de Euler) é utilizado apenas quando n1 não é primo.
+    
+
