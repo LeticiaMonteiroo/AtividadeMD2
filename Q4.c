@@ -1,9 +1,3 @@
-
-//   ATIVIDADE MD2 - QUESTÃO 04
-//   Nomes: Letícia da Silva Monteiro - 231026859
-//          Maria Samara A. Silva - 231027005
-
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -11,9 +5,7 @@
 #include <windows.h>
 #endif
 
-// --------------------------------------------------
-// [Função] mdc (para uso interno, sem prints)
-// --------------------------------------------------
+
 int mdc(int a, int b) {
     a = abs(a);
     b = abs(b);
@@ -25,9 +17,7 @@ int mdc(int a, int b) {
     return a;
 }
 
-// --------------------------------------------------
-// [Função] mdccmPassos (com prints para passo a passo)
-// --------------------------------------------------
+
 int mdccmPassos(int a, int b) {
     a = abs(a);
     b = abs(b);
@@ -42,9 +32,7 @@ int mdccmPassos(int a, int b) {
     return a;
 }
 
-// --------------------------------------------------
-// [Função] eh_primo
-// --------------------------------------------------
+
 int eh_primo(int n) {
     if (n <= 1) return 0;
     if (n == 2) return 1;
@@ -55,9 +43,7 @@ int eh_primo(int n) {
     return 1;
 }
 
-// --------------------------------------------------
-// [Função] fiEuler
-// --------------------------------------------------
+
 int fiEuler(int n) {
     printf("[PASSO 4] Calculando φ(%d):\n", n);
     int resultado = n;
@@ -78,9 +64,7 @@ int fiEuler(int n) {
     return resultado;
 }
 
-// --------------------------------------------------
-// [Função] inverseModular 
-// --------------------------------------------------
+
 int inverseModular(int a, int m) {
     printf("[PASSO 2] Calculando inverso modular de %d mod %d:\n", a, m);
 
@@ -111,7 +95,7 @@ int inverseModular(int a, int m) {
         printf("    [INV] q=%d, x0=%d, x1=%d, a=%d, m=%d\n", q, x0, x1, temp_a, temp_m);
     }
 
-    //Verificar se o inverso existe APÓS o algoritmo
+
     if (temp_a != 1) {
         printf("  [ERRO] mdc(%d, %d) != 1 → inverso não existe.\n\n", a, m0);
         return -1;
@@ -127,9 +111,7 @@ int inverseModular(int a, int m) {
     return x1;
 }
 
-// --------------------------------------------------
-// [Função] powMod
-// --------------------------------------------------
+
 int powMod(int base, int exp, int mod) {
     printf("[PASSO 3] Calculando %d^%d mod %d:\n", base, exp, mod);
 
@@ -209,9 +191,7 @@ int powMod(int base, int exp, int mod) {
     return (int)res;
 }
 
-// --------------------------------------------------
-// [main] 
-// --------------------------------------------------
+
 int main() {
 #ifdef _WIN32
     SetConsoleOutputCP(CP_UTF8);
