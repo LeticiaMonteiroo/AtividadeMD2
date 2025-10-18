@@ -281,7 +281,7 @@ int main() {
     printf("CHAVE PRIVADA: (n=%lld, d=%lld)\n", n, d);
     getchar(); 
     char msg_original[100];
-    printf("\nDigite a mensagem (somente letras e espacos): ");
+    printf("\nDigite a mensagem (somente letras e espacos, sem acentos): ");
     fgets(msg_original, sizeof(msg_original), stdin);
     msg_original[strcspn(msg_original, "\n")] = 0;
     for (int i = 0; msg_original[i]; i++) {
